@@ -28,13 +28,13 @@ jobs:
         run: |
           gem install bundler
           bundler install
-      - name: Setup test database
-        env:
-          RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: myapp
-        run: |
-          rake db:setup
+#       - name: Setup test database
+#         env:
+#           RAILS_ENV: test
+#           PGHOST: localhost
+#           PGUSER: myapp
+#         run: |
+#           rake db:setup
 
       - name: Run tests
         run: bin/rspec
