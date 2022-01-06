@@ -17,9 +17,29 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Test
-        run: bundle exec rspec
+      - uses: actions/checkout@v2
+      - name: Set up ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: /
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: create database schema
+        run: bundle exec rake db:schema:load
+        env:
+          RAILS_ENV: test
+        working-directory: /
+      - name: run db migration for running unit tests (specs)
+        run: bundle exec rake db:migrate
+        env:
+          RAILS_ENV: test
+        working-directory: /
+      - name: run specs
+        run: bundle exec rake spec --trace
+        env:
+          RAILS_ENV: test
+        working-directory: /
 
       # Runs a set of commands using the runners shell
       - name: Simplecov Report
