@@ -34,7 +34,7 @@ jobs:
           PGHOST: localhost
           PGUSER: myapp
         run: |
-          bin/rails db:setup
+          rake db:setup
 
       - name: Run tests
         run: bin/rspec
